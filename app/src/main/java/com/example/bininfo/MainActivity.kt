@@ -12,9 +12,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppNavHost()
+            val navController = rememberNavController()
+            AppNavHost(navController)
         }
     }
 }
-
 

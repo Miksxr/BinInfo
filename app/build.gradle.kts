@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.bininfo"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.bininfo"
@@ -77,6 +77,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.navigation.compose)

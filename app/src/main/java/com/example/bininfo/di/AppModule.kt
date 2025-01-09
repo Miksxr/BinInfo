@@ -21,12 +21,22 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): BinDatabase {
+        return BinDatabase.getInstance(context)
+    }
+
+    @Provides
+    fun provideBinDao(database: BinDatabase): BinDao {
+        return database.binDao()
+    }
 
     @Provides
     @Singleton
     fun provideBinApi(): BinApi {
         return Retrofit.Builder()
-            .baseUrl("https://lookup.binlist.net")
+            .baseUrl(BinApi.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(BinApi::class.java)
@@ -34,25 +44,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideBinDatabase(context: Context): BinDatabase {
-        return Room.databaseBuilder(context, BinDatabase::class.java, "bin_database").build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideBinRepository(binApi: BinApi, binDatabase: BinDatabase): BinRepository {
-        return BinRepositoryImpl(binApi, binDatabase.binDao())
-    }
-
-    @Provides
-    @Singleton
-    fun provideFetchBinInfoUseCase(repository: BinRepository): FetchBinInfoUseCase {
-        return FetchBinInfoUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetHistoryUseCase(repository: BinRepository): GetHistoryUseCase {
-        return GetHistoryUseCase(repository)
+    fun provideBinRepository(api: BinApi, dao: BinDao): BinRepository {
+        return BinRepositoryImpl(api, dao)
     }
 }

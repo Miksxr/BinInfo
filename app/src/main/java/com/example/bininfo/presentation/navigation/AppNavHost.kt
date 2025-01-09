@@ -9,16 +9,9 @@ import com.example.bininfo.presentation.screens.bininput.BinInputScreen
 import com.example.bininfo.presentation.screens.history.HistoryScreen
 
 @Composable
-fun AppNavHost() {
-    val navController = rememberNavController()
+fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "bin_input") {
-        composable("bin_input") {
-            BinInputScreen(onNavigateToHistory = {
-                navController.navigate("history")
-            })
-        }
-        composable("history") {
-            HistoryScreen(onBack = { navController.popBackStack() })
-        }
+        composable("bin_input") { BinInputScreen(navController = navController) }
+        composable("history") { HistoryScreen(navController = navController) }
     }
 }

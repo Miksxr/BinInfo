@@ -7,4 +7,8 @@ import retrofit2.http.Path
 interface BinApi {
     @GET("/{bin}")
     suspend fun getBinInfo(@Path("bin") bin: String): BinInfo
+
+    companion object {
+        const val BASE_URL = "https://lookup.binlist.net"
+    }
 }

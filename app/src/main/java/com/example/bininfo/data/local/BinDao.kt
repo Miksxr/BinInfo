@@ -9,9 +9,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface BinDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBinHistory(binHistory: BinHistory)
+    suspend fun insert(binHistory: BinHistory)
 
-    @Query("SELECT * FROM binhistory ORDER BY timestamp DESC")
-    suspend fun getBinHistory(): List<BinHistory>
+    @Query("SELECT * FROM bin_history ORDER BY timestamp DESC")
+    fun getAll(): Flow<List<BinHistory>>
 }
+
 

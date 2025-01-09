@@ -11,26 +11,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BinInputViewModel @Inject constructor(
-    private val fetchBinInfoUseCase: FetchBinInfoUseCase
-) : ViewModel() {
-
-    private val _state = MutableStateFlow(BinInputState())
-    val state: StateFlow<BinInputState> = _state
+class BinInputViewModel @Inject constructor(private val fetchBinInfoUseCase: FetchBinInfoUseCase) : ViewModel() {
+    private val _result = MutableStateFlow<BinInfoModel?>(null)
+    val result: StateFlow<BinInfoModel?> get() = _result
 
     fun fetchBinInfo(bin: String) {
         viewModelScope.launch {
             try {
-                val binInfo = fetchBinInfoUseCase(bin)
-                _state.value = _state.value.copy(binInfo = binInfo)
+                _result.value = fetchBinInfoUseCase(bin)
             } catch (e: Exception) {
-                _state.value = _state.value.copy(error = "Failed to fetch BIN info")
+                _result.value = null
             }
         }
     }
-
-    data class BinInputState(
-        val binInfo: BinInfoModel? = null,
-        val error: String? = null
-    )
 }
